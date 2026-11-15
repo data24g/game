@@ -17,4 +17,3 @@ Mở file `index.html` bằng trình duyệt, không cần cài đặt hay build
 2. Vào **Settings → Pages**.
 3. Ở mục **Build and deployment**, chọn **Source: Deploy from a branch**, **Branch: main**, thư mục **/ (root)**, rồi bấm **Save**.
 4. Đợi 1 đến 2 phút, trang sẽ chạy tại `https://<username>.github.io/<tên-repo>/`.
-# game
