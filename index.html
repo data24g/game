@@ -78,7 +78,7 @@ canvas{width:100%;height:100%;display:block}
 #mdone{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,14,28,.72);padding:16px;border-radius:16px}
 #exam{display:none;flex:1;min-height:0;flex-direction:column;gap:10px}
 #eTop{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.ecard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;overflow:auto;flex:1;flex-direction:column}
+.ecard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;overflow:auto;flex:1;min-height:0;flex-direction:column}
 #eQ{font-size:1.08rem;line-height:1.55;font-weight:600}
 .evi{background:color-mix(in srgb,var(--accent) 10%,var(--bg));border-left:4px solid var(--accent);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:.95rem;line-height:1.5}
 .opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;background:var(--bg);color:var(--text);border:2px solid var(--border);box-shadow:none;font-weight:600;font-size:.98rem}
@@ -142,7 +142,7 @@ canvas{width:100%;height:100%;display:block}
   </div>
 <div id="exam">
     <div id="eTop"><button class="ghost" id="eBack" style="padding:6px 12px">‹ Menu</button><b id="eTitle">Ôn đề thi</b><span id="eProg"></span></div>
-    <div id="eSets" class="ecard"><h2 style="margin-top:0">Chọn đề để ôn</h2><div id="eList"></div><label style="margin-top:10px"><input type="checkbox" id="eShuf" checked> Xáo trộn thứ tự câu hỏi</label></div>
+    <div id="eSets" class="ecard"><h2 style="margin:0 0 8px">Chọn đề để ôn (10 câu/đề)</h2><label style="margin-bottom:10px"><input type="checkbox" id="eShuf" checked> Xáo trộn thứ tự câu hỏi</label><div id="eList"></div></div>
     <div id="eBody" class="ecard" style="display:none"><div id="eQ"></div><div><button class="ghost" id="eTrBtn" style="padding:6px 14px;margin:10px 0">🌐 Dịch</button></div><div id="eTr" class="evi" style="display:none"></div><div id="eOpts"></div><div class="row"><button id="eNext" style="display:none">Câu tiếp ›</button></div></div>
   </div>
   <div id="match">
@@ -517,6 +517,16 @@ Object.assign(GL,{
   "penetration":"sự thâm nhập","diffusion":"sự khuếch tán","sterilization":"sự khử trùng"
 });
 
+const SPLIT=[];
+EXAMS.forEach(s=>{
+  const base=s.title.split(" (")[0],n=Math.ceil(s.items.length/10);
+  for(let k=0;k<n;k++){
+    const part=s.items.slice(k*10,(k+1)*10);
+    SPLIT.push({id:s.id+"_"+(k+1),title:base+(n>1?" · Phần "+(k+1)+"/"+n:"")+" ("+part.length+" câu)",items:part});
+  }
+});
+EXAMS.splice(0,EXAMS.length,...SPLIT);
+
 let E=null;
 const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 const gl=o=>GL[o.toLowerCase().trim()];
@@ -560,3 +570,4 @@ $("start").onclick=begin;$("again").onclick=begin;$("edit").onclick=toSetup;$("q
 $("wrap").addEventListener("pointerdown",()=>$("kb").focus());
 </script>
 </body>
+</html>
